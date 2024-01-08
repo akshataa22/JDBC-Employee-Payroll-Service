@@ -45,9 +45,47 @@ public class EmployeePayrollData {
                 employeePayrollsList.add(data);
             }
         }
-
         return employeePayrollsList;
     }
+
+    public static void updateBasicPay(Connection connection, String name, int basic_pay) throws SQLException {
+        String updateQuery = "UPDATE employee_payroll SET basic_pay = ? WHERE name = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+            preparedStatement.setDouble(1, basic_pay);
+            preparedStatement.setString(2, name);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("Base pay updated successfully for " + name);
+                System.out.println();
+            } else {
+                System.out.println("Failed to update base pay for " + name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List displayEmployeePayrollData(List<EmployeePayrollData> employeePayrolls) {
+        System.out.println("Employee Payroll Data:");
+        for (EmployeePayrollData employeePayroll : employeePayrolls) {
+            System.out.println("Employee ID: " + employeePayroll.getId());
+            System.out.println("Employee Name: " + employeePayroll.getName());
+            System.out.println("Employee Phone Number: " + employeePayroll.getPhone_number());
+            System.out.println("Employee Address: " + employeePayroll.getAddress());
+            System.out.println("Employee Department: " + employeePayroll.getDepartment());
+            System.out.println("Employee Gender: " + employeePayroll.getGender());
+            System.out.println("Employee's Basic Pay: " + employeePayroll.getBasic_pay());
+            System.out.println("Employee Deductions: " + employeePayroll.getDeductions());
+            System.out.println("Employee Taxable Pay: " + employeePayroll.getTaxable_pay());
+            System.out.println("Employee Income Tax: " + employeePayroll.getIncome_tax());
+            System.out.println("Employee Net Pay: " + employeePayroll.getNet_pay());
+            System.out.println("Employee's Start Date: " + employeePayroll.getStart_date());
+            System.out.println("------------------------------");
+        }
+        return employeePayrolls;
+    }
+
     public String getDepartment() {
         return department;
     }
